@@ -12,11 +12,11 @@
 	<link rel="stylesheet" href="/css/admin.css" type="text/css">
 	
 	<!-- CDN(Content Delivery Network) 호스트 사용 -->
+	<script src="../javascript/CommonScript.js"></script>
 	<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
 	<script type="text/javascript">
 		
 		function fncAddUser() {
-			
 			var id=$("input[name='userId']").val();
 			var pw=$("input[name='password']").val();
 			var pw_confirm=$("input[name='password2']").val();
@@ -92,8 +92,7 @@
 				 if(email != "" && (email.indexOf('@') < 1 || email.indexOf('.') == -1) ){
 			    	alert("이메일 형식이 아닙니다.");
 			     }
-			});
-			 
+			});			 
 		});	
 		
 	   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -133,14 +132,36 @@
 		 $(function() {
 			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
 			//==> 1 과 3 방법 조합 : $("tagName.className:filter함수") 사용함.	
-			 $("td.ct_btn:contains('ID중복확인')").on("click" , function() {
-				//alert($("td.ct_btn:contains('ID중복확인')").html());
-				popWin 
-				= window.open("/user/checkDuplication.jsp",
-											"popWin", 
-											"left=300,top=200,width=300,height=200,marginwidth=0,marginheight=0,"+
-											"scrollbars=no,scrolling=no,menubar=no,resizable=no");
-			});
+			//ajax로 변경 
+// 			 $("td.ct_btn:contains('ID중복확인')").on("click" , function() {
+// 				//alert($("td.ct_btn:contains('ID중복확인')").html());
+// 				popWin 
+// 				= window.open("/user/checkDuplication.jsp",
+// 											"popWin", 
+// 											"left=300,top=200,width=300,height=200,marginwidth=0,marginheight=0,"+
+// 											"scrollbars=no,scrolling=no,menubar=no,resizable=no");
+// 			});
+			
+				$("input:text[name=userId]").keyup(function(){
+					var tableName = "users";
+					var colum = "user_id";
+					var valueColum = "user_id";
+					var value = $(this).val();
+					var obj = $($(this).parent().parent().find("td")[1]);
+					
+					if(CheckSpace(value) == false && CheckSpecial(value) == false){
+						ValidationCheck(tableName,colum,value,valueColum,function(output){
+//	 						alert("output : " + output + " " + typeof(output));
+							if(output == "true"){				
+								obj.css("color","green").text("사용가능");
+							}else{
+								obj.css("color","red").text("사용불가 : 이미 존재하는 ID");
+							}
+						});
+					}else{
+						obj.css("color","red").text("사용불가 : 잘못된 형식");
+					}
+				});
 		});	
 
 	</script>		
@@ -188,21 +209,23 @@
 						<input 	type="text" name="userId" class="ct_input_bg" 
 										style="width:100px; height:19px"  maxLength="20" >
 					</td>
-					<td>
-						<table border="0" cellspacing="0" cellpadding="0">
-							<tr>
-								<td width="4" height="21">
-									<img src="/images/ct_btng01.gif" width="4" height="21"/>
-								</td>
-								<td align="center" background="/images/ct_btng02.gif" class="ct_btn" style="padding-top:3px;">
-									 ID중복확인
-								</td>
-								<td width="4" height="21">
-									<img src="/images/ct_btng03.gif" width="4" height="21"/>
-								</td>
-							</tr>
-						</table>
-					</td>
+					<td></td>
+<!-- 					중복확인 ajax로 변경  -->
+<!-- 					<td> -->
+<!-- 						<table border="0" cellspacing="0" cellpadding="0"> -->
+<!-- 							<tr> -->
+<!-- 								<td width="4" height="21"> -->
+<!-- 									<img src="/images/ct_btng01.gif" width="4" height="21"/> -->
+<!-- 								</td> -->
+<!-- 								<td align="center" background="/images/ct_btng02.gif" class="ct_btn" style="padding-top:3px;"> -->
+<!-- 									 ID중복확인 -->
+<!-- 								</td> -->
+<!-- 								<td width="4" height="21"> -->
+<!-- 									<img src="/images/ct_btng03.gif" width="4" height="21"/> -->
+<!-- 								</td> -->
+<!-- 							</tr> -->
+<!-- 						</table> -->
+<!-- 					</td> -->
 				</tr>
 			</table>
 		</td>

@@ -12,15 +12,31 @@
 <title>구매 목록 조회</title>
 
 <link rel="stylesheet" href="/css/admin.css" type="text/css">
-<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="../javascript/CommonScript.js"></script>
 <script type="text/javascript">
 $(function(){
+	var obj = [];
+	
+	autoComplete(obj);
+	
 	var prodNoList = [${prodNoList}];
+	var prodFileList = [${prodFileList}];
 	
 	$("tr.ct_list_pop td:nth-child(3)").css("color","red");
 	$("tr.ct_list_pop td:nth-child(3)").on("click",function(){
 		location.href = "/product/getProduct?prodNo="+prodNoList[$($("td",$(this).parent())[0]).text()-1];
 	});	
+	
+	$("tr.ct_list_pop td:nth-child(3)").mouseover(function(){
+		$("body").append("<p id='imgfile'> <img src='../images/uploadFiles/" + prodFileList[$("tr.ct_list_pop td:nth-child(3)").index($(this))] + "'/> </p>");
+	});
+	
+	$("tr.ct_list_pop td:nth-child(3)").mouseout(function(){
+		$("#imgfile").remove();
+	});
 	
 	$("#searchKeyword").keydown(function(key){
 		if( key.keyCode==13 ){
@@ -85,7 +101,29 @@ $(function(){
 	    });
 	});
 	
+	$("#searchKeyword").keyup(function(){
+		if($("#searchCondition").val() == 1 && $("#searchKeyword").val().length >= 1){			
+			GetData("product","prod_name","prod_name",$("#searchKeyword").val(),function(output){
+// 				alert("output : " + output + " " + typeof(output));
+				var jsonArray = $.parseJSON(output);
+// 				alert(jsonArray);
+				autoComplete(jsonArray);
+			});
+		}
+	});
+	
 });
+
+
+/////////////////////////////////////////////////////
+
+
+function autoComplete(obj){
+// 	alert(obj);
+	$("#searchKeyword").autocomplete({
+		source : obj
+	});	
+}
 
 function fncValidationCheck(){
 	var result = true;
@@ -110,17 +148,13 @@ function fncValidationCheck(){
 }
 
 function fncGetList(currentPage){
-// 	document.detailForm.currentPage.value = currentPage;
 	$("input[name=currentPage]").val(currentPage);
-// 	document.detailForm.menu.value = "${param.menu}";
 	$("input[name=menu]").val("${param.menu}");
 	
-	//검색 조건 Validation Check
 	if(!fncValidationCheck()){
 		return;
 	}
 
-// 	document.detailForm.submit();
 	$("form[name=detailForm]").submit();
 }
 

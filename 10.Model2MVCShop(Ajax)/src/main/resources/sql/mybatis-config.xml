@@ -27,6 +27,7 @@
 		<mapper resource="sql/ProductStockMapper.xml"/>
 		<mapper resource="sql/PurchaseMapper.xml"/>
 		<mapper resource="sql/CartMapper.xml"/>
+		<mapper resource="sql/UtilMapper.xml"/>
 	</mappers>
 
 </configuration>

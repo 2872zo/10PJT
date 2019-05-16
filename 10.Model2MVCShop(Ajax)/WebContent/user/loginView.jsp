@@ -59,9 +59,8 @@
 								//Debug...
 								//alert(status);
 								//alert("JSONData : \n"+JSONData);
-								//alert( "JSON.stringify(JSONData) : \n"+JSON.stringify(JSONData) );
+								alert( "JSON.stringify(JSONData) : \n"+JSON.stringify(JSONData) );
 								//alert( JSONData != null );
-								
 								if( JSONData != null ){
 									//[¹æ¹ý1]
 									//$(window.parent.document.location).attr("href","/index.jsp");

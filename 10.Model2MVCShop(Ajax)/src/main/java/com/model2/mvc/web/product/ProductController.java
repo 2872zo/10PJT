@@ -192,12 +192,16 @@ public class ProductController {
 		
 		List<Product> prodList = (List<Product>) map.get("list");
 		String prodNoList = null;
+		String prodFileList = null;
 		if(prodList != null && prodList.size() > 0) {
 			prodNoList = String.valueOf(prodList.get(0).getProdNo());
+			prodFileList = "'" + String.valueOf(prodList.get(0).getFileName()) + "'";
 			for(int i=1;i<prodList.size();i++) {
 				prodNoList += "," + String.valueOf(prodList.get(i).getProdNo()); 
+				prodFileList += ",'" + String.valueOf(prodList.get(i).getFileName()) + "'"; 
 			}
-			resultMap.put("prodNoList", prodNoList);			
+			resultMap.put("prodNoList", prodNoList);
+			resultMap.put("prodFileList", prodFileList);		
 		}
 		
 		
