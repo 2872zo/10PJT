@@ -59,7 +59,7 @@
 								//Debug...
 								//alert(status);
 								//alert("JSONData : \n"+JSONData);
-								alert( "JSON.stringify(JSONData) : \n"+JSON.stringify(JSONData) );
+								//alert( "JSON.stringify(JSONData) : \n"+JSON.stringify(JSONData) );
 								//alert( JSONData != null );
 								if( JSONData != null ){
 									//[¹æ¹ý1]

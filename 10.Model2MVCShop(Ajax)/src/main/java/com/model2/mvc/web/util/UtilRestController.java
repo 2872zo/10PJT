@@ -48,7 +48,7 @@ public class UtilRestController {
 	@RequestMapping( value="json/getData", method=RequestMethod.POST )
 	public List<String> getData(@RequestBody Map<String,String> map) throws Exception{
 		
-		System.out.println("json/validationCheck : POST");
+		System.out.println("json/getData : POST");
 		
 		System.out.println("tableName : " + map.get("tableName"));
 		System.out.println("colum : " + map.get("colum"));
@@ -56,5 +56,14 @@ public class UtilRestController {
 		
 		//Business Logic
 		return utilService.getData(map);
+	}
+	
+	@RequestMapping( value="json/updateData", method=RequestMethod.POST )
+	public boolean updateData(@RequestBody Map<String,String> map) throws Exception{
+		
+		System.out.println("json/updateData : POST");
+		
+		//Business Logic
+		return utilService.updateData(map);
 	}
 }

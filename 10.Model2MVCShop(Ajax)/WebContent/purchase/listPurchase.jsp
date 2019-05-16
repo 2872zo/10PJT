@@ -25,10 +25,10 @@
 		});	
 		
 		$("a:contains('배송출발')").on("click",function(){
-			fncUpdatePurchaseCode(${resultPage.currentPage},tranNoList[$($("td",$(this).parent().parent())[0]).text()-1], 2);
+			fncUpdatePurchaseCode($(this).parent(),tranNoList[$($("td",$(this).parent().parent())[0]).text()-1], 2);
 		});
 		$("a:contains('수취확인')").on("click",function(){
-			fncUpdatePurchaseCode(${resultPage.currentPage},tranNoList[$($("td",$(this).parent().parent())[0]).text()-1], 3)
+			fncUpdatePurchaseCode($(this).parent(),tranNoList[$($("td",$(this).parent().parent())[0]).text()-1], 3)
 		});
 		
 		$(".sort").on("click",function(){
@@ -68,12 +68,36 @@
 		$("form[name=detailForm]").submit();
 	}
 	
-	function fncUpdatePurchaseCode(currentPage,tranNo,tranCode){		
-		var URI = "/purchase/updateTranCode?page="+currentPage+"&tranNo="+tranNo+"&tranCode="+tranCode;
+	function fncUpdatePurchaseCode(target,tranNo,tranCode){		
 		
-		console.log(URI);
+		var jsonObj = new Object();
+		jsonObj.tableName = "transaction";
+		jsonObj.setColum = "tran_status_code";
+		jsonObj.setValue = tranCode;
+		jsonObj.whereValue = tranNo;
+		jsonObj.whereColum = "tran_no"
 		
-		location.href = URI;
+		var jsonString = JSON.stringify(jsonObj);
+		alert(jsonString);
+		
+		$.ajax({
+			url: "/util/json/updateData",
+			method:"POST",
+			dataType : "json",
+			headers : {
+				"Accept" : "application/json",
+				"Content-Type" : "application/json"
+			},
+			data:jsonString,
+			error : function(status,code,errorText){
+				alert("error : " + status.status + " " + errorText);
+			},
+			success : function(textData){
+				alert(textData);
+				target.empty();
+				$("td:contains('배송준비중')").text("배송중");
+			}
+		});
 	}
 
 	function fncSortList(currentPage, sortCode){

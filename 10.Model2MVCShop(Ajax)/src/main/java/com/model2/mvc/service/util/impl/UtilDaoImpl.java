@@ -39,4 +39,8 @@ public class UtilDaoImpl implements UtilDao {
 		return sqlsession.selectList("UtilMapper.getData", map);
 	}
 
+	@Override
+	public boolean updateData(Map<String, String> map) {
+		return sqlsession.update("UtilMapper.updateData", map)==1?true:false;
+	}
 }

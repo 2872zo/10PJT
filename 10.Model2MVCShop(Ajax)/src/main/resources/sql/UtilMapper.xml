@@ -21,4 +21,11 @@
 		FROM ${tableName}
 		WHERE ${colum} like '%${value}%'
 	</select>
+	
+	<update id="updateData" parameterType="map">
+		UPDATE
+		${tableName}
+		SET	${setColum} = ${setValue}
+		WHERE ${whereColum} = ${whereValue}
+	</update>
 </mapper>

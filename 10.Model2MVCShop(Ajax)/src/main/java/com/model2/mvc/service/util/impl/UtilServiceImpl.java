@@ -31,4 +31,9 @@ public class UtilServiceImpl implements UtilService {
 		return utilDao.getData(map);
 	}
 
+	@Override
+	public boolean updateData(Map<String, String> map) {
+		return utilDao.updateData(map);
+	}
+
 }
