@@ -28,15 +28,23 @@ $(function(){
 	});	
 	
 	//이미지 띄우기
+	$( "#dialog" ).dialog({
+      autoOpen: false
+    });
 	$("tr.ct_list_pop td:nth-child(3)").hover(
 	function(){
 		$(this).css("background","#dcdcdc");
-		$(this).parent().next().find("td").append("<p id='imgfile'> <img src='../images/uploadFiles/" + prodFileList[$("tr.ct_list_pop td:nth-child(3)").index($(this))] + "' width='200'/> </p>");
+// 		$(this).parent().next().find("td").append("<p id='imgfile'> <img src='../images/uploadFiles/" + prodFileList[$("tr.ct_list_pop td:nth-child(3)").index($(this))] + "' width='200'/> </p>");
+		$("#dialog").append("<p id='imgfile'> <img src='../images/uploadFiles/" + prodFileList[$("tr.ct_list_pop td:nth-child(3)").index($(this))] + "' width='200'/> </p>");
+		$( "#dialog" ).dialog( "option", "position", { my: "left top", at: "left bottom", of: $(this) } );
+		$( "#dialog" ).dialog( "open" );
 	},
 	function(){
+		$( "#dialog" ).dialog( "close" );
 		$(this).css("background","");
 		$("#imgfile").remove();
 	});
+	
 	
 	//search 기능
 	$("#searchKeyword").keydown(function(key){
@@ -279,6 +287,8 @@ function fncUpdateTranCodeByProd(currentPage, prodNo){
 </table>
 </form>
 
+</div>
+<div id="dialog">
 </div>
 </body>
 </html>
