@@ -18,18 +18,16 @@
 <script src="../javascript/CommonScript.js"></script>
 <script type="text/javascript">
 $(function(){
-	var obj = [];
-	
-	autoComplete(obj);
-	
 	var prodNoList = [${prodNoList}];
 	var prodFileList = [${prodFileList}];
-	
+
+	//제품 상세정보
 	$("tr.ct_list_pop td:nth-child(3)").wrapInner("<ins></ins>");
 	$("tr.ct_list_pop td:nth-child(3)").on("click",function(){
 		location.href = "/product/getProduct?prodNo="+prodNoList[$($("td",$(this).parent())[0]).text()-1];
 	});	
-		
+	
+	//이미지 띄우기
 	$("tr.ct_list_pop td:nth-child(3)").hover(
 	function(){
 		$(this).css("background","#dcdcdc");
@@ -40,6 +38,7 @@ $(function(){
 		$("#imgfile").remove();
 	});
 	
+	//search 기능
 	$("#searchKeyword").keydown(function(key){
 		if( key.keyCode==13 ){
 			fncGetList(${resultPage.currentPage});
@@ -49,8 +48,20 @@ $(function(){
 		fncGetList(${resultPage.currentPage});
 	});
 	
+	
+	//제품 sorting
+	$(".ct_list_b:contains('No')").addClass("sort");
+	$(".ct_list_b:contains('상품명')").addClass("sort");
+	$(".ct_list_b:contains('가격')").addClass("sort");
+	$(".sort").wrapInner("<ins></ins>");
 	$(".sort").on("click",function(){
-		fncSortList(${resultPage.currentPage},$(".sort").index($(this)));
+// 		alert($("td.sort").index($(this)));
+		var sortCode = $(".sort").index($(this));
+		if(sortCode == $("#sortCode").val()){
+			sortCode += 2; 
+		}
+		alert(sortCode);
+		fncSortList(${resultPage.currentPage},sortCode);
 	});
 	
 	$("#unHidding").on("click",function(){
@@ -233,21 +244,21 @@ function fncUpdateTranCodeByProd(currentPage, prodNo){
 			<c:import url="../common/pageNavigator.jsp"/>
 		</td>
 	</tr>
-	<tr>
-		<td align="center">
-			<a href="#" class="sort">상품 번호 오름차순</a>
-			&nbsp;
-			<a href="#" class="sort">상품 번호 내림차순</a>
-			&nbsp;
-			<a href="#" class="sort">상품 이름 오름차순</a>
-			&nbsp;
-			<a href="#" class="sort">상품 이름 내림차순</a>
-			&nbsp;
-			<a href="#" class="sort">가격 낮은순</a>
-			&nbsp;
-			<a href="#" class="sort">가격 높은순</a>
-		</td>
-	</tr>
+<!-- 	<tr> -->
+<!-- 		<td align="center"> -->
+<!-- 			<a href="#" class="sort">상품 번호 오름차순</a> -->
+<!-- 			&nbsp; -->
+<!-- 			<a href="#" class="sort">상품 번호 내림차순</a> -->
+<!-- 			&nbsp; -->
+<!-- 			<a href="#" class="sort">상품 이름 오름차순</a> -->
+<!-- 			&nbsp; -->
+<!-- 			<a href="#" class="sort">상품 이름 내림차순</a> -->
+<!-- 			&nbsp; -->
+<!-- 			<a href="#" class="sort">가격 낮은순</a> -->
+<!-- 			&nbsp; -->
+<!-- 			<a href="#" class="sort">가격 높은순</a> -->
+<!-- 		</td> -->
+<!-- 	</tr> -->
 	<tr>
 		<td align="center">
 			<a href="#" id="hidding">재고없는 상품 숨기기</a>
