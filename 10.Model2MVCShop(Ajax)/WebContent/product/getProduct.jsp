@@ -4,6 +4,7 @@
 <%@ page contentType="text/html; charset=EUC-KR"%>
 <%@ page pageEncoding="EUC-KR"%>
 <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script src="../javascript/CommonScript.js"></script>
 <script type="text/javascript">
 	function fncGetAddPurchaseView(prodNo){
 		$("input[name=prodNo]").val(prodNo);
@@ -44,7 +45,18 @@
 		});
 		
 		$("a:contains('담기')").on("click",function(){
-			addCart(${product.prodNo});
+			var prodNo = ${product.prodNo};
+			var userId = "${user.userId}";
+			GetData("cart","user_id","prod_no",userId,function(output){
+// 				alert("output : " + output + " " + typeof(output));
+// 				alert(output.indexOf(prodNo));
+				if(output.indexOf(prodNo) == -1){
+					addCart(prodNo);		
+				}else{
+					alert("장바구니에 같은 상품이 존재합니다.");
+				}
+			});
+			
 		});
 		
 	});

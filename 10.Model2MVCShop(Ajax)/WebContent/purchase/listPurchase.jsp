@@ -9,17 +9,20 @@
 
 <link rel="stylesheet" href="/css/admin.css" type="text/css">
 <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script src="../javascript/CommonScript.js"></script>
 <script type="text/javascript">
 	$(function(){
+		$("a").wrapInner("<ins></ins>");
+		
 		var tranNoList = [${tranNoList}];
 		var prodNoList = [${prodNoList}];
 		
-		$("tr.ct_list_pop td:nth-child(5)").css("color","red");
+		$("tr.ct_list_pop td:nth-child(5)").wrapInner("<ins></ins>");
 		$("tr.ct_list_pop td:nth-child(5)").on("click",function(){
 			location.href = "/product/getProduct?prodNo="+prodNoList[$($("td",$(this).parent())[0]).text()-1];
 		});	
 		
-		$("tr.ct_list_pop td:nth-child(1)").css("color","red");
+		$("tr.ct_list_pop td:nth-child(1)").wrapInner("<ins></ins>");
 		$("tr.ct_list_pop td:nth-child(1)").on("click",function(){
 			location.href = "/purchase/getPurchase?tranNo="+tranNoList[$(this).text()-1];
 		});	
@@ -69,33 +72,15 @@
 	}
 	
 	function fncUpdatePurchaseCode(target,tranNo,tranCode){		
+		UpdateData("transaction","tran_status_code",tranCode,tranNo,"tran_no",function(output){
 		
-		var jsonObj = new Object();
-		jsonObj.tableName = "transaction";
-		jsonObj.setColum = "tran_status_code";
-		jsonObj.setValue = tranCode;
-		jsonObj.whereValue = tranNo;
-		jsonObj.whereColum = "tran_no"
-		
-		var jsonString = JSON.stringify(jsonObj);
-		alert(jsonString);
-		
-		$.ajax({
-			url: "/util/json/updateData",
-			method:"POST",
-			dataType : "json",
-			headers : {
-				"Accept" : "application/json",
-				"Content-Type" : "application/json"
-			},
-			data:jsonString,
-			error : function(status,code,errorText){
-				alert("error : " + status.status + " " + errorText);
-			},
-			success : function(textData){
-				alert(textData);
+			if(output){
 				target.empty();
-				$("td:contains('배송준비중')").text("배송중");
+				if($(target.parent().find("td")[8]).text() == "배송준비중"){
+					$(target.parent().find("td")[8]).text("배송중");
+				}else if($(target.parent().find("td")[8]).text() == "배송중"){
+					$(target.parent().find("td")[8]).text("거래완료");
+				}
 			}
 		});
 	}

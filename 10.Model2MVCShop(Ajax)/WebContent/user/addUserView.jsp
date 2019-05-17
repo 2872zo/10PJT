@@ -12,8 +12,8 @@
 	<link rel="stylesheet" href="/css/admin.css" type="text/css">
 	
 	<!-- CDN(Content Delivery Network) 호스트 사용 -->
-	<script src="../javascript/CommonScript.js"></script>
 	<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+	<script src="../javascript/CommonScript.js"></script>
 	<script type="text/javascript">
 		
 		function fncAddUser() {
@@ -130,18 +130,6 @@
 	
 		//==>"ID중복확인" Event 처리 및 연결
 		 $(function() {
-			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
-			//==> 1 과 3 방법 조합 : $("tagName.className:filter함수") 사용함.	
-			//ajax로 변경 
-// 			 $("td.ct_btn:contains('ID중복확인')").on("click" , function() {
-// 				//alert($("td.ct_btn:contains('ID중복확인')").html());
-// 				popWin 
-// 				= window.open("/user/checkDuplication.jsp",
-// 											"popWin", 
-// 											"left=300,top=200,width=300,height=200,marginwidth=0,marginheight=0,"+
-// 											"scrollbars=no,scrolling=no,menubar=no,resizable=no");
-// 			});
-			
 				$("input:text[name=userId]").keyup(function(){
 					var tableName = "users";
 					var colum = "user_id";

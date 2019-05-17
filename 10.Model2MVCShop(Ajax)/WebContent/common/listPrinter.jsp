@@ -39,8 +39,11 @@
 
 <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-top:10px;">
 	<tr>
+		<c:if test="${!empty resultPage}">
 		<td colspan="8" >전체 ${resultPage.totalCount} 건수, 현재 ${resultPage.currentPage} 페이지</td>
+		</c:if>
 		<td align="right">
+			<c:if test="${!empty search}">
 			표시 개수
 			<select name="pageSize" class="ct_input_g" style="width:80px" id="pageSize">
 				<option ${(empty search || search.pageSize eq 3)?"selected='selected'":""}>3</option>
@@ -49,6 +52,7 @@
 				<option value="10" ${(!empty search && search.pageSize eq 10)?"selected='selected'":""}>10</option>
 				<option value="15" ${(!empty search && search.pageSize eq 15)?"selected='selected'":""}>15</option>
 			</select>
+			</c:if>
 		</td>
 	</tr>
 	<tr>

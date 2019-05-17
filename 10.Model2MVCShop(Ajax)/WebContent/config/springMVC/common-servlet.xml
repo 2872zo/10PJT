@@ -19,8 +19,8 @@
     <!--  ㅇ 어노테이션 기반 :: Spring Framework 사용.
     		ㅇ @Controller annotation 선언된 Bean 만 Wiring
 		   ㅇ @Service / @Repository  annotation 선언된 Bean 은 Scan 제외 -->
-	<context:component-scan base-package="com.model2.mvc.web">
-		<context:include-filter 	type="annotation"		expression="org.springframework.stereotype.Controller" />
+	<context:component-scan base-package="com.model2.mvc.web,com.model2.mvc.common.util">
+		<context:include-filter 	type="annotation"	expression="org.springframework.stereotype.Controller" />
 		<context:exclude-filter 	type="annotation" 	expression="org.springframework.stereotype.Service"/>
 		<context:exclude-filter 	type="annotation" 	expression="org.springframework.stereotype.Repository"/>
 	</context:component-scan> 
@@ -69,9 +69,7 @@
 
 	<!-- 	:: exception resolver  선언 :: 서술적 / 선언적 예외처리 
 			:: Servlet 에서의 선언적 예외처리를 다시 생각하며....  -->
-	<bean id="exceptionResolver"
-				class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
-		
+	<bean id="exceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
 		<property name="exceptionMappings">
 			<props>
 				<prop key="java.lang.NullPointerException">/common/nullError.jsp</prop>

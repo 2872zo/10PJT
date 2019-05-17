@@ -25,16 +25,18 @@ $(function(){
 	var prodNoList = [${prodNoList}];
 	var prodFileList = [${prodFileList}];
 	
-	$("tr.ct_list_pop td:nth-child(3)").css("color","red");
+	$("tr.ct_list_pop td:nth-child(3)").wrapInner("<ins></ins>");
 	$("tr.ct_list_pop td:nth-child(3)").on("click",function(){
 		location.href = "/product/getProduct?prodNo="+prodNoList[$($("td",$(this).parent())[0]).text()-1];
 	});	
-	
-	$("tr.ct_list_pop td:nth-child(3)").mouseover(function(){
-		$("body").append("<p id='imgfile'> <img src='../images/uploadFiles/" + prodFileList[$("tr.ct_list_pop td:nth-child(3)").index($(this))] + "'/> </p>");
-	});
-	
-	$("tr.ct_list_pop td:nth-child(3)").mouseout(function(){
+		
+	$("tr.ct_list_pop td:nth-child(3)").hover(
+	function(){
+		$(this).css("background","#dcdcdc");
+		$(this).parent().next().find("td").append("<p id='imgfile'> <img src='../images/uploadFiles/" + prodFileList[$("tr.ct_list_pop td:nth-child(3)").index($(this))] + "' width='200'/> </p>");
+	},
+	function(){
+		$(this).css("background","");
 		$("#imgfile").remove();
 	});
 	

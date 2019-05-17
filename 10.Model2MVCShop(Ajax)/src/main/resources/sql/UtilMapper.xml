@@ -10,7 +10,7 @@
 		SELECT
 		COUNT(*)
 		FROM(SELECT
-			${columValue}
+			${valueColum}
 			FROM ${tableName}
 			WHERE ${colum} = #{value})		
 	</select>

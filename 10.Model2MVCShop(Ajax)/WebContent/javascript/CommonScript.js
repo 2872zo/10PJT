@@ -56,6 +56,28 @@ function GetData(tableName, colum, valueColum, value, handleData){
 	});
 }
 
+function UpdateData(tableName, setColum, setValue, whereColum, whereValue, handleData){
+	var jsonObj = {tableName:tableName,setColum:setColum,setValue:setValue,whereValue:whereValue,whereColum:whereColum};
+	var jsonString = JSON.stringify(jsonObj);
+	
+	$.ajax({
+		url: "/util/json/updateData",
+		method:"POST",
+		dataType : "json",
+		headers : {
+			"Accept" : "application/json",
+			"Content-Type" : "application/json"
+		},
+		data:jsonString,
+		error : function(status,code,errorText){
+			alert("error : " + status.status + " " + errorText);
+		},
+		success : function(textData){
+			handleData(textData);
+		}
+	});
+}
+
 function FormValidation(form){
      for(vi=0; vi<form.elements.length;vi++){
         var formField = form.elements[vi];
