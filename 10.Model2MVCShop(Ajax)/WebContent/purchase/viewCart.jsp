@@ -4,9 +4,12 @@
 <%@ page contentType="text/html; charset=EUC-KR"%>
 <%@ page pageEncoding="EUC-KR"%>
 
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 	<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js?autoload=false"></script>
 	<script type="text/javascript">
 	function addPurchaseByCart(){
 		countCheck = $(".listcheckbox:checkbox:checked").length
@@ -103,8 +106,26 @@
 	}
 	
 	$(function(){
+		//날짜 입력
 		$("#datepicker").datepicker();
 		$( "#datepicker" ).datepicker( "option", "dateFormat", "yy-mm-dd" );
+		
+		//주소 입력
+		$("[name=zonecode],[name=firstAddress]").on("click",function(){
+			daum.postcode.load(function(){
+				new daum.Postcode({
+			        oncomplete: function(data) {
+//	 		        	console.log("data : " + data.address);
+						$("[name=zonecode]").val(data.zonecode);
+						if(data.userSelectedType == "J"){
+			        		$("[name=firstAddress]").val(data.jibunAddress);
+						}else{
+							$("[name=firstAddress]").val(data.roadAddress);
+						}				
+			        }
+			    }).open();
+			});
+		});	
 		
 		makeSelect($("tr.ct_list_pop td:nth-child(11)"));
 		
@@ -137,10 +158,6 @@
 	
 	
 </script>
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-
 <head>
 	<link rel="stylesheet" href="/css/admin.css" type="text/css">
 	
@@ -205,21 +222,15 @@
 		<td width="104" class="ct_write">구매자주소</td>
 		<td bgcolor="D6D6D6" width="1"></td>
 		<td class="ct_write01">
-			<input 	type="text" name="dlvyAddr" class="ct_input_g" 
-							style="width: 100px; height: 19px" maxLength="20" value="${user.addr}"/>
+			<input 	type="text" class="dlvyAddr" name="zonecode" 	  style="width: 50px; height: 19px" maxLength="20" value="${user.addr}"/>
+			<input 	type="text" class="dlvyAddr" name="firstAddress"  style="width: 300px; height: 19px" maxLength="20" value="${user.addr}"/>
+			<input 	type="text" class="dlvyAddr" name="secondAddress" style="width: 300px; height: 19px" maxLength="20" value="${user.addr}"/>
 		</td>
 	</tr>
 	<tr>
 		<td height="1" colspan="3" bgcolor="D6D6D6"></td>
 	</tr>
-	<tr>
-		<td width="104" class="ct_write">구매요청사항</td>
-		<td bgcolor="D6D6D6" width="1"></td>
-		<td class="ct_write01">
-			<input		type="text" name="dlvyRequest" 	class="ct_input_g" 
-							style="width: 100px; height: 19px" maxLength="20" />
-		</td>
-	</tr>
+	
 	<tr>
 		<td height="1" colspan="3" bgcolor="D6D6D6"></td>
 	</tr>

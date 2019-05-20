@@ -147,7 +147,7 @@ public class PurchaseController {
 		columList.add("제품이름");
 		columList.add("구매수량");
 		columList.add("거래상태");
-		columList.add("정보수정");
+		columList.add("비고");
 
 		// UnitList 설정
 		List<Purchase> list = (List<Purchase>) map.get("list");

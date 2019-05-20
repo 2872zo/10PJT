@@ -68,7 +68,7 @@ $(function(){
 		if(sortCode == $("#sortCode").val()){
 			sortCode += 2; 
 		}
-		alert(sortCode);
+// 		alert(sortCode);
 		fncSortList(${resultPage.currentPage},sortCode);
 	});
 	

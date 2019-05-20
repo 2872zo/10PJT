@@ -13,6 +13,9 @@ public class Purchase implements Cloneable{
 	private String receiverName;
 	private String receiverPhone;
 	private String dlvyAddr;
+	private String zonecode;
+	private String firstAddress;
+	private String secondAddress;
 	private String dlvyRequest;
 	private String tranCode;
 	private Date orderDate;
@@ -29,10 +32,23 @@ public class Purchase implements Cloneable{
 		this.buyer = buyer;
 	}
 	public String getDlvyAddr() {
-		return dlvyAddr;
+		if(this.zonecode != null && this.firstAddress != null && this.secondAddress != null) {
+			return this.zonecode+","+this.firstAddress+","+this.secondAddress;
+		}else {
+			return dlvyAddr;
+		}
 	}
 	public void setDlvyAddr(String dlvyAddr) {
-		this.dlvyAddr = dlvyAddr;
+		if(dlvyAddr != null) {
+			String[] stringArray = dlvyAddr.split(",");
+			if(stringArray.length > 1) {
+				setZonecode(stringArray[0]);
+				setFirstAddress(stringArray[1]);
+				setSecondAddress(stringArray[2]);
+			}else {
+				this.dlvyAddr = dlvyAddr;
+			}
+		}
 	}
 	public String getDlvyDate() {
 		return dlvyDate;
@@ -96,6 +112,30 @@ public class Purchase implements Cloneable{
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
+	
+	public String getZonecode() {
+		return zonecode;
+	}
+
+	public String getFirstAddress() {
+		return firstAddress;
+	}
+
+	public String getSecondAddress() {
+		return secondAddress;
+	}
+
+	public void setZonecode(String zonecode) {
+		this.zonecode = zonecode;
+	}
+
+	public void setFirstAddress(String firstAddress) {
+		this.firstAddress = firstAddress;
+	}
+
+	public void setSecondAddress(String secondAddress) {
+		this.secondAddress = secondAddress;
+	}
 
 	@Override
 	public String toString() {
@@ -124,7 +164,11 @@ public class Purchase implements Cloneable{
 		purchaseList.add("备概规过,"+paymentString);
 		purchaseList.add("备概磊捞抚,"+receiverName);
 		purchaseList.add("备概磊楷遏贸,"+receiverPhone);
-		purchaseList.add("备概磊林家,"+dlvyAddr);
+		if(dlvyAddr != null) {
+			purchaseList.add("备概磊林家,"+dlvyAddr);
+		}else {
+			purchaseList.add("备概磊林家,快祈锅龋 :"+zonecode+"<br/>"+"林家 : " + firstAddress + " " + secondAddress);
+		}
 		purchaseList.add("备概夸没荤亲,"+dlvyRequest);
 		purchaseList.add("硅价锐噶老,"+dlvyDate);
 		purchaseList.add("林巩老,"+orderDate);

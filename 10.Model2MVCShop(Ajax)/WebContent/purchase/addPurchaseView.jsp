@@ -11,14 +11,33 @@
 
 <link rel="stylesheet" href="/css/admin.css" type="text/css">
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-<link rel="stylesheet" href="/resources/demos/style.css">
 
-<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-</script>
+<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js?autoload=false"></script>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=af129d6f31fb9f7c15612976228f2d81"></script>
 
 <script type="text/javascript">
 $(function(){
+	$("[name=zonecode],[name=firstAddress]").on("click",function(){
+		daum.postcode.load(function(){
+			new daum.Postcode({
+		        oncomplete: function(data) {
+// 		        	for(i in data) {
+//  				   		console.log("no is " + [i] + ", value is " + data[i]);
+// 					}
+
+					$("[name=zonecode]").val(data.zonecode);
+					if(data.userSelectedType == "J"){
+		        		$("[name=firstAddress]").val(data.jibunAddress);
+					}else{
+						$("[name=firstAddress]").val(data.roadAddress);
+					}				
+		        }
+		    }).open();
+		});
+	});	
+
 	$("#add").on("click",function(){
 		fncAddPurchase();	
 	});
@@ -29,6 +48,18 @@ $(function(){
 	
 	$("#datepicker").datepicker();
 	$( "#datepicker" ).datepicker( "option", "dateFormat", "yy-mm-dd" );
+	
+	
+	//////////다음지도//////////////////
+// 	var container = document.getElementById("map"); //지도를 담을 영역의 DOM 레퍼런스
+// 	alert(container);
+// 	var options = { //지도를 생성할 때 필요한 기본 옵션
+// 		center: new daum.maps.LatLng(33.450701, 126.570667), //지도의 중심좌표.
+// 		level: 3 //지도의 레벨(확대, 축소 정도)
+// 	};
+// 	var map = new daum.maps.Map(container, options); //지도 생성 및 객체 리턴
+	///////////////////////////////////
+
 });
 
 <!--
@@ -40,6 +71,7 @@ function fncAddPurchase() {
 </head>
 
 <body>
+<!-- <div id="map" style="width:500px;height:400px;"></div> -->
 
 <form name="addPurchase" method="post" action="/purchase/addPurchase">
 
@@ -194,8 +226,9 @@ function fncAddPurchase() {
 		<td width="104" class="ct_write">구매자주소</td>
 		<td bgcolor="D6D6D6" width="1"></td>
 		<td class="ct_write01">
-			<input 	type="text" name="dlvyAddr" class="ct_input_g" 
-							style="width: 100px; height: 19px" maxLength="20" value="${user.addr}"/>
+			<input 	type="text" class="dlvyAddr" name="zonecode" 	  style="width: 50px; height: 19px" maxLength="20" value="${user.addr}"/>
+			<input 	type="text" class="dlvyAddr" name="firstAddress"  style="width: 300px; height: 19px" maxLength="20" value="${user.addr}"/>
+			<input 	type="text" class="dlvyAddr" name="secondAddress" style="width: 300px; height: 19px" maxLength="20" value="${user.addr}"/>
 		</td>
 	</tr>
 	<tr>
@@ -205,8 +238,7 @@ function fncAddPurchase() {
 		<td width="104" class="ct_write">구매요청사항</td>
 		<td bgcolor="D6D6D6" width="1"></td>
 		<td class="ct_write01">
-			<input		type="text" name="dlvyRequest" 	class="ct_input_g" 
-							style="width: 100px; height: 19px" maxLength="20" />
+			<input type="text" name="dlvyRequest" class="ct_input_g" style="width: 150px; height: 19px" maxLength="30" />
 		</td>
 	</tr>
 	<tr>
@@ -256,5 +288,6 @@ function fncAddPurchase() {
 </table>
 </form>
 
+	
 </body>
 </html>
