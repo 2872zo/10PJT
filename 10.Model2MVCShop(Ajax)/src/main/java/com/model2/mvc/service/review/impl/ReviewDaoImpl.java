@@ -31,7 +31,7 @@ public class ReviewDaoImpl implements ReviewDao {
 	}
 
 	@Override
-	public List<Review> getReviews(Search search) {
+	public List<Review> getReviewList(Search search) {
 		return sqlsession.selectList("ReviewMapper.getReviewList",search);
 	}
 
@@ -43,5 +43,15 @@ public class ReviewDaoImpl implements ReviewDao {
 	@Override
 	public boolean deleteReview(int reviewNo) {
 		return (sqlsession.delete("ReviewMapper.deleteReview", reviewNo)==1?true:false);
+	}
+
+	@Override
+	public Review getReview(int reviewNo) {
+		return sqlsession.selectOne("ReviewMapper.getReview",reviewNo);
+	}
+
+	@Override
+	public int makeTotalCount(Search search) {
+		return sqlsession.selectOne("ReviewMapper.makeTotalCount",search);
 	}
 }
