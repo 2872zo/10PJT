@@ -21,8 +21,8 @@
 
 	<insert id="addReview" parameterType="search">
 		INSERT
-		INTO review ( review_no, prod_no, user_id, title, text, fileName, rating, reg_date, tran_no)
-		VALUES (REVIEW_SEQ.NEXTVAL, #{prodNo}, #{userId}, #{title}, #{text}, #{fileName}, #{rating}, SYSDATE, #{tranNo})
+		INTO review ( review_no, prod_no, user_id, title, text, image_file, rating, reg_date, tran_no)
+		VALUES (REVIEW_SEQ.NEXTVAL, #{prodNo}, #{userId}, #{title}, #{text:VARCHAR}, #{fileName:VARCHAR}, #{rating}, SYSDATE, #{tranNo})
 	</insert>
 
 

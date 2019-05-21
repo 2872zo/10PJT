@@ -19,46 +19,13 @@
 	<script type="text/javascript">
 		
 		function fncAddReview() {
-			var id=$("input[name='userId']").val();
-			var pw=$("input[name='password']").val();
-			var pw_confirm=$("input[name='password2']").val();
-			var name=$("input[name='userName']").val();
+// 			$("[name=text]").val($("[name=text]").val().replace(/(?:\r\n|\r|\n)/g, '<br/>'));
+// 			alert("[name=text]");
+			var tmp = $("[name=text]").val().replace(/(?:\r\n|\r|\n)/g, '<br/>');
+			$("[name=text]").val(tmp);
 			
-			
-			if(id == null || id.length <1){
-				alert("아이디는 반드시 입력하셔야 합니다.");
-				return;
-			}
-			if(pw == null || pw.length <1){
-				alert("패스워드는  반드시 입력하셔야 합니다.");
-				return;
-			}
-			if(pw_confirm == null || pw_confirm.length <1){
-				alert("패스워드 확인은  반드시 입력하셔야 합니다.");
-				return;
-			}
-			if(name == null || name.length <1){
-				alert("이름은  반드시 입력하셔야 합니다.");
-				return;
-			}
-			
-			if( pw != pw_confirm ) {				
-				alert("비밀번호 확인이 일치하지 않습니다.");
-				$("input:text[name='password2']").focus();
-				return;
-			}
-				
-			var value = "";	
-			if( $("input:text[name='phone2']").val() != ""  &&  $("input:text[name='phone3']").val() != "") {
-				var value = $("option:selected").val() + "-" 
-									+ $("input[name='phone2']").val() + "-" 
-									+ $("input[name='phone3']").val();
-			}
-			//Debug..
-			//alert("phone : "+value)
-			$("input:hidden[name='phone']").val( value );
-			
-			$("form").attr("method" , "POST").attr("action" , "/user/addUser").submit();
+			alert($("[name=rating]").val());
+			$("form").attr("method" , "POST").attr("action" , "/review/addReview").submit();
 		}
 		
 		//==>"가입"  Event 연결
@@ -66,9 +33,7 @@
 			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
 			//==> 1 과 3 방법 조합 : $("tagName.className:filter함수") 사용함.	
 			 $( "td.ct_btn01:contains('작성 완료')" ).on("click" , function() {
-				//Debug..
-				//alert(  $( "td.ct_btn01:contains('가입')" ).html() );
-				fncAddUser();
+				fncAddReview();
 			});
 		});	
 		
@@ -95,6 +60,12 @@
                 }
             });
         });
+		
+		$(function(){
+			$("[name=tranNo]").val(${param.tranNo});
+			$("[name=prodNo]").val(${param.prodNo});
+			$("[name=userId]").val(${param.userId});
+		});
 	</script>		
 	
 </head>
@@ -102,9 +73,9 @@
 <body bgcolor="#ffffff" text="#000000">
 
 <form name="detailForm">
-<input type="hidden" name="tranNo" value="${tranNo}">
-<input type="hidden" name="prodNo" value="${prodNo}">
-<input type="hidden" name="userId" value="${userId}">
+<input type="hidden" name="tranNo" value="">
+<input type="hidden" name="prodNo" value="">
+<input type="hidden" name="userId" value="">
 
 <table width="100%" height="37" border="0" cellpadding="0"	cellspacing="0">
 	<tr>
@@ -166,7 +137,7 @@
 		<td bgcolor="D6D6D6" width="1"></td>
 		<td class="ct_write01">
 			<div id="star"></div>
-			<input type="hidden" id="starRating" name="rating">
+			<input type="hidden" id="starRating" name="rating" value="3">
 		</td>
 	</tr>
 	
@@ -180,7 +151,7 @@
 		</td>
 		<td bgcolor="D6D6D6" width="1"></td>
 		<td class="ct_write01">
-			<input 	type="file" name="file" class="ct_input_g" style="height:19px"/>
+			<input 	type="text" name="file" class="ct_input_g" style="height:19px"/>
 		</td>
 	</tr>
 

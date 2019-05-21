@@ -42,8 +42,13 @@
 		});
 		
 		$("a:contains('府轰累己')").on("click",function(){
-			alert("府轰累己");
-			$("form").attr("method","POST").attr("action","../review/addReviewView.jsp").submit();
+			var clickObj = $(this).parent().parent();
+			var dataString = "/review/addReviewView.jsp?tranNo="+tranNoList[$($("td",$(this).parent().parent())[0]).text()-1]
+				+ "&prodNo=" + prodNoList[$($("td",$(this).parent().parent())[0]).text()-1] + "&userId='" + $($(clickObj.find('td')[2])).text() + "'";
+
+			alert(dataString);
+			
+			location.href = dataString;
 		});
 		
 		$("a:contains('府轰犬牢')").on("click",function(){
