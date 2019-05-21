@@ -49,6 +49,11 @@ public class ReviewDaoImpl implements ReviewDao {
 	public Review getReview(int reviewNo) {
 		return sqlsession.selectOne("ReviewMapper.getReview",reviewNo);
 	}
+	
+	@Override
+	public Review getReviewBytranNo(int tranNo) {
+		return sqlsession.selectOne("ReviewMapper.getReviewBytranNo",tranNo);
+	}
 
 	@Override
 	public int makeTotalCount(Search search) {

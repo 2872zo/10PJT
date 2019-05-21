@@ -49,8 +49,6 @@ public class ReviewController {
 		return new ModelAndView("forward:/product/getProduct?prodNo="+review.getProdNo());
 	}
 
-	
-	
 	@RequestMapping("listReview")
 	public ModelAndView getReviewList(@ModelAttribute Search search) throws Exception {
 		Map<String, Object> map = reviewService.getReviewList(search);
@@ -60,7 +58,6 @@ public class ReviewController {
 		return modelAndView;
 	}
 
-	
 	@RequestMapping("updateReview")
 	public ModelAndView updateReview(@ModelAttribute Review review) throws Exception {
 			
@@ -78,11 +75,6 @@ public class ReviewController {
 		reviewService.deleteReview(reviewNo);
 		
 		return new ModelAndView("forward:/purchase/listPurchase");
-	}
-	
-	@RequestMapping("deleteReview")
-	public void deleteCart(@RequestParam("reviewNo") int reviewNo) throws Exception {
-		reviewService.deleteReview(reviewNo);
 	}
 }
 

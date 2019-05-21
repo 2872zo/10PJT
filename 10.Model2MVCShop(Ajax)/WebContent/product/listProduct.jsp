@@ -288,7 +288,8 @@ function fncUpdateTranCodeByProd(currentPage, prodNo){
 </form>
 
 </div>
-<div id="dialog">
-</div>
+
+<div id="dialog"></div>
+
 </body>
 </html>

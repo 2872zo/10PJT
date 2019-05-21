@@ -34,7 +34,10 @@ import com.model2.mvc.common.Search;
 import com.model2.mvc.common.util.CommonUtil;
 import com.model2.mvc.common.util.HttpUtil;
 import com.model2.mvc.service.domain.Product;
+import com.model2.mvc.service.domain.Review;
+import com.model2.mvc.service.domain.User;
 import com.model2.mvc.service.product.ProductService;
+import com.model2.mvc.service.review.ReviewService;
 
 @Controller
 @RequestMapping("/product/*")
@@ -42,6 +45,10 @@ public class ProductController {
 	@Autowired
 	@Qualifier("productService")
 	ProductService productService;
+	
+	@Autowired
+	@Qualifier("reviewService")
+	ReviewService reviewService;
 	
 	@Value("#{commonProperties['pageUnit']}")
 	int pageUnit;
@@ -85,18 +92,48 @@ public class ProductController {
 	public String getProduct(@RequestParam("prodNo") int prodNo, 
 			@RequestParam(value="menu", required=false) String menu,
 			@CookieValue(value = "history", required = false) Cookie cookie,
-			Map<String,Object> map,
+			Map<String,Object> map, HttpSession session,
 			HttpServletResponse response) throws Exception {
-		System.out.println("\n==>getProudct Start.........");
-		
 		String targetURI = null;
-
 		Product product = productService.getProduct(prodNo);
 
 		// list 형태로 product 전달
 		// domain에 toList() 추가
 		map.put("list", product.toList());
 		map.put("product", product);
+		
+		//리뷰 출력을 위한 데이터 조회
+		Search search = new Search();
+		search.setProdNo(prodNo);
+//		search.setUserId(((User)session.getAttribute("user")).getUserId());
+		Map<String,Object> reviewMap = reviewService.getReviewList(search);
+		List<Review> reviewList = (List<Review>) reviewMap.get("list");
+		int reviewCount = (int) reviewMap.get("totalCount");
+		
+		List<String> columList = new Vector<String>();
+		columList.add("리뷰번호");
+		columList.add("제목");
+		columList.add("작성자");
+		columList.add("평점");
+		
+		List<List> unitList = new Vector<List>();
+		List<String> unitDetail = null;
+		for (int i = 0; i < reviewList.size(); i++) {
+			unitDetail = new Vector<String>();
+			unitDetail.add(String.valueOf(reviewList.get(i).getReviewNo()));
+			unitDetail.add(reviewList.get(i).getTitle());
+			unitDetail.add(reviewList.get(i).getUserId());
+			unitDetail.add(String.valueOf(reviewList.get(i).getRating()));	
+			unitList.add(unitDetail);
+		}
+		
+		map.put("columList", columList);
+		map.put("title", "상품 리뷰");
+		map.put("unitList", unitList);
+		
+		
+		
+		
 		
 		if (menu == null || menu.equals("search")) {
 			targetURI = "forward:/product/getProduct.jsp";
@@ -258,33 +295,33 @@ public class ProductController {
 	
 	private List makeProductList(String menu, List<Product> productList, int currentPage) {
 		List<List> unitList = new Vector<List>();
-		List<String> UnitDetail = null;
+		List<String> unitDetail = null;
 		String aTagEnd = "</a>";
 		
 		for (int i = 0; i < productList.size(); i++) {
-			System.out.println(productList.get(i));
-			UnitDetail = new Vector<String>();
+//			System.out.println(productList.get(i));
+			unitDetail = new Vector<String>();
 			//1.제품 순서 번호
-			UnitDetail.add(String.valueOf(i + 1));
+			unitDetail.add(String.valueOf(i + 1));
 			//2.제품 이름
-			String aTagGetProductStart = "<a href='/product/getProduct?prodNo=" + productList.get(i).getProdNo() + "\'>";
+//			String aTagGetProductStart = "<a href='/product/getProduct?prodNo=" + productList.get(i).getProdNo() + "\'>";
 //			UnitDetail.add(aTagGetProductStart + productList.get(i).getProdName() + aTagEnd);
-			UnitDetail.add(productList.get(i).getProdName());
+			unitDetail.add(productList.get(i).getProdName());
 			//3.제품 가격
-			UnitDetail.add(String.valueOf(productList.get(i).getPrice()));
+			unitDetail.add(String.valueOf(productList.get(i).getPrice()));
 			//4.제품 등록 날짜
-			UnitDetail.add(String.valueOf(productList.get(i).getRegDate()));
+			unitDetail.add(String.valueOf(productList.get(i).getRegDate()));
 			//5.제품 상태
 			if (menu.equals("manage")) {
 				if(productList.get(i).getTranCount() != 0) {
 					String aTagSaleListStart = "<a href='/purchase/listSale?prodNo=" + productList.get(i).getProdNo() + "\'>";
-					UnitDetail.add(aTagSaleListStart + "거래 건수 : " + productList.get(i).getTranCount() + aTagEnd);
+					unitDetail.add(aTagSaleListStart + "거래 건수 : " + productList.get(i).getTranCount() + aTagEnd);
 				}
 			} else {
 				if (productList.get(i).getStock() > 0) {
-					UnitDetail.add("판매중");
+					unitDetail.add("판매중");
 				} else {
-					UnitDetail.add("재고없음");
+					unitDetail.add("재고없음");
 				}
 			}
 
@@ -292,7 +329,7 @@ public class ProductController {
 			
 			
 			//1~5과정을 통해 만들어진 리스트를 삽입
-			unitList.add(UnitDetail);
+			unitList.add(unitDetail);
 		}
 		return unitList;
 	}

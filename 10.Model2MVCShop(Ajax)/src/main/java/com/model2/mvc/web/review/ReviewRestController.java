@@ -1,11 +1,16 @@
 package com.model2.mvc.web.review;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.model2.mvc.common.Search;
 import com.model2.mvc.service.domain.Review;
 import com.model2.mvc.service.review.ReviewService;
 
@@ -25,10 +30,15 @@ public class ReviewRestController {
 		return reviewService.getReview(reviewNo);
 	}
 	
-//	@RequestMapping(value="json/listPurchase")
-//	public Map<String,Object> getPurchaseList(@RequestBody Search search) throws Exception {
-//		return purchaseService.getPurchaseList(search);
-//	}
+	@RequestMapping("json/getReviewBytranNo")
+	public Review getReviewBytranNo(@RequestBody Map<String,Integer> tranNo) throws Exception {
+		return reviewService.getReviewBytranNo(tranNo.get("tranNo"));
+	}	
+	
+	@RequestMapping(value="json/listReview")
+	public Map<String,Object> getPurchaseList(@RequestBody Search search) throws Exception {
+		return reviewService.getReviewList(search);
+	}
 //
 //	
 //	@RequestMapping("json/updatePurchase")
@@ -54,5 +64,11 @@ public class ReviewRestController {
 //
 //		return purchaseService.updateTranCode(purchase)==1; 
 //	}
+	
+	@ExceptionHandler(value = Exception.class)
+	public String nfeHandler(Exception e) {
+		e.printStackTrace();
+		return e.getMessage();
+	}
 }
 

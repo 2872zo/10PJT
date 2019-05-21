@@ -53,4 +53,8 @@ public class ReviewServiceImpl implements ReviewService {
 		return reviewDao.getReview(reviewNo);
 	}
 
+	@Override
+	public Review getReviewBytranNo(int tranNo) {
+		return reviewDao.getReviewBytranNo(tranNo);
+	}
 }

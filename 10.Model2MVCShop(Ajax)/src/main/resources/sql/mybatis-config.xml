@@ -18,6 +18,7 @@
 		<typeAlias alias="user" 	type="com.model2.mvc.service.domain.User" />
 		<typeAlias alias="product"	type="com.model2.mvc.service.domain.Product" />
 		<typeAlias alias="purchase" type="com.model2.mvc.service.domain.Purchase" />
+		<typeAlias alias="review" 	type="com.model2.mvc.service.domain.Review" />
 	</typeAliases>
 	
 	 <!-- SQL Definition :: file include -->
@@ -28,6 +29,7 @@
 		<mapper resource="sql/PurchaseMapper.xml"/>
 		<mapper resource="sql/CartMapper.xml"/>
 		<mapper resource="sql/UtilMapper.xml"/>
+		<mapper resource="sql/ReviewMapper.xml"/>
 	</mappers>
 
 </configuration>

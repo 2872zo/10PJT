@@ -1021,5 +1021,86 @@ End;
  
   ALTER TABLE "SCOTT"."TRANSACTION" ADD FOREIGN KEY ("BUYER_ID")
 	  REFERENCES "SCOTT"."USERS" ("USER_ID") ENABLE;
+	  
+	  
+	  
+	  
+--------------------------------------------------------
+--  파일이 생성됨 - 화요일-5월-21-2019   
+--------------------------------------------------------
+DROP TABLE "SCOTT"."REVIEW" cascade constraints;
+--------------------------------------------------------
+--  DDL for Sequence REVIEW_SEQ
+--------------------------------------------------------
+
+	CREATE  SEQUENCE "SCOTT"."REVIEW_SEQ" START WITH 10001 INCREMENT BY 1 MAXVALUE  1E28 MINVALUE  1 NOCYCLE CACHE  20 NOORDER;
+--------------------------------------------------------
+--  DDL for Table REVIEW
+--------------------------------------------------------
+
+  CREATE TABLE "SCOTT"."REVIEW" 
+   (	"REVIEW_NO" NUMBER(5,0), 
+	"PROD_NO" NUMBER(5,0), 
+	"USER_ID" VARCHAR2(15 BYTE), 
+	"TITLE" VARCHAR2(30 BYTE), 
+	"TEXT" VARCHAR2(300 BYTE), 
+	"IMAGE_FILE" VARCHAR2(100 BYTE), 
+	"RATING" NUMBER(1,0), 
+	"REG_DATE" DATE
+   ) PCTFREE 10 PCTUSED 40 INITRANS 1 MAXTRANS 255 NOCOMPRESS LOGGING
+  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1 BUFFER_POOL DEFAULT)
+  TABLESPACE "USERS" ;
+REM INSERTING into SCOTT.REVIEW
+SET DEFINE OFF;
+--------------------------------------------------------
+--  DDL for Index REVIEW_PK
+--------------------------------------------------------
+
+  CREATE UNIQUE INDEX "SCOTT"."REVIEW_PK" ON "SCOTT"."REVIEW" ("REVIEW_NO") 
+  PCTFREE 10 INITRANS 2 MAXTRANS 255 
+  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1 BUFFER_POOL DEFAULT)
+  TABLESPACE "USERS" ;
+--------------------------------------------------------
+--  DDL for Trigger BI_REVIEW
+--------------------------------------------------------
+
+  CREATE OR REPLACE TRIGGER "SCOTT"."BI_REVIEW" 
+  before insert on "REVIEW"               
+  for each row  
+begin   
+    select "REVIEW_SEQ".nextval into :NEW.REVIEW_NO from dual; 
+end; 
+
+/
+ALTER TRIGGER "SCOTT"."BI_REVIEW" ENABLE;
+--------------------------------------------------------
+--  DDL for Synonymn DUAL
+--------------------------------------------------------
+
+  CREATE OR REPLACE PUBLIC SYNONYM "DUAL" FOR "SYS"."DUAL";
+--------------------------------------------------------
+--  Constraints for Table REVIEW
+--------------------------------------------------------
+
+  ALTER TABLE "SCOTT"."REVIEW" ADD CONSTRAINT "REVIEW_PK" PRIMARY KEY ("REVIEW_NO")
+  USING INDEX PCTFREE 10 INITRANS 2 MAXTRANS 255 
+  STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1 BUFFER_POOL DEFAULT)
+  TABLESPACE "USERS"  ENABLE;
+ 
+  ALTER TABLE "SCOTT"."REVIEW" MODIFY ("REVIEW_NO" NOT NULL ENABLE);
+ 
+  ALTER TABLE "SCOTT"."REVIEW" MODIFY ("PROD_NO" NOT NULL ENABLE);
+ 
+  ALTER TABLE "SCOTT"."REVIEW" MODIFY ("USER_ID" NOT NULL ENABLE);
+ 
+  ALTER TABLE "SCOTT"."REVIEW" MODIFY ("TITLE" NOT NULL ENABLE);
+ 
+  ALTER TABLE "SCOTT"."REVIEW" MODIFY ("RATING" NOT NULL ENABLE);
+ 
+  ALTER TABLE "SCOTT"."REVIEW" MODIFY ("REG_DATE" NOT NULL ENABLE);
+
 
 COMMIT;

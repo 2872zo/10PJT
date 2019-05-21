@@ -3,6 +3,9 @@
 <%@ page language="java"%>
 <%@ page contentType="text/html; charset=EUC-KR"%>
 <%@ page pageEncoding="EUC-KR"%>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
 <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
 <script src="../javascript/CommonScript.js"></script>
 <script type="text/javascript">
@@ -59,13 +62,30 @@
 			
 		});
 		
+		$(".ct_list_pop").on("click",function(){
+			var reviewNo = $($(this).find("td")[0]).text();
+			var target = $(this).next().find("td");
+			
+			if($(document).find(".text") != null){
+				if(!target.find("div").hasClass("text")){
+					$(document).find(".text").remove();
+					
+//		 			alert($($(this).find("td")[0]).text());
+					GetData("review","review_no","text",reviewNo,function(output){
+//		 				alert(output);
+						var text = $.parseJSON(output);
+//		 				alert(text);
+						target.append("<div class='text'>"+text+"</div>");
+					});
+				}else{
+					$(document).find(".text").remove();
+				}
+			}
+		});
 	});
 	
 	
 </script>
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
 <head>
 	<link rel="stylesheet" href="/css/admin.css" type="text/css">
 	<title>상품상세조회</title>
@@ -75,6 +95,7 @@
 <form name="detailForm" method="post" action="/purchase/addPurchaseView">
 <input type="hidden" name="prodNo" id="prodNo">
 
+<!-- 상세 정보 출력 -->
 <c:import url="../common/getDetail.jsp"/>
 
 <table width="100%" border="0" cellspacing="0" cellpadding="0"	style="margin-top: 10px;">
@@ -147,6 +168,13 @@
 		</td>
 	</tr>
 </table>
+
+<!-- 리뷰 출력 -->
+<br/><br/>
+<c:import url="../common/listPrinter.jsp">
+	<c:param name="unitList" value="${reviewList}"/>
+</c:import>
+
 </form>
 
 </body>

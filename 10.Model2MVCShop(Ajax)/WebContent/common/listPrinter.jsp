@@ -1,6 +1,7 @@
 <%@ page contentType="text/html; charset=euc-kr" %>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <span id="listPrinter">
 <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
 <script type="text/javascript">
@@ -32,9 +33,7 @@
 </table>
 
 
-<c:import url="../common/searchPrinter.jsp">
-	<c:param name="domainName" value="${param.domainName}"/>
-</c:import>
+<c:import url="../common/searchPrinter.jsp"/>
 
 
 <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-top:10px;">
@@ -55,13 +54,18 @@
 			</c:if>
 		</td>
 	</tr>
+	
+	<!-- colum 출력 -->
+	<c:if test="${!empty columList}">
 	<tr>
+		<!-- checkbox 출력 -->
 		<c:if test="${!empty checkboxOn}">
 			<td class="ct_list_b"> 
 				<input type="checkbox">
 			</td>
 			<td class="ct_line02"></td>
 		</c:if>
+		
 		<c:set var="i" value="0"/>
 		<c:forEach var="columName" items="${columList}">
 			<c:set var="i" value="${i+1}"/>
@@ -73,11 +77,21 @@
 			${columName}</td>
 			<td class="ct_line02"></td>
 		</c:forEach>	
+		
 	</tr>
+	</c:if>
+	<!-- colum 출력 끝 -->
+	
 	<tr>
 		<td colspan="11" bgcolor="808285" height="1"></td>
 	</tr>
 	
+	<c:if test="${!empty param.unitList}">
+		<c:set var="unitList" value="${param.unitList}"></c:set>
+	</c:if>
+	
+	<!-- 실제 List 출력 -->
+	<c:if test="${!empty unitList}">
 	<c:set var="i" value="0"/>
 	<c:forEach var="list" items="${unitList}">
 		<c:set var="i" value="${i+1}"/>
@@ -91,7 +105,7 @@
 			</c:if>
 			
 			<c:forEach var="detailUnit" items="${list}">
-				<td align="center">${detailUnit}</td>
+				<td align="center">${fn:replace(detailUnit,"\\n","<br/>")}</td>
 				<td></td>
 			</c:forEach>
 		</tr>	
@@ -99,6 +113,9 @@
 			<td colspan="11" bgcolor="D6D7D6" height="1"></td>
 		</tr>
 	</c:forEach>
+	</c:if>
+	
+	<!-- 실제 List 출력 끝 -->
 </table>
 </span>
 

@@ -15,4 +15,6 @@ public interface ReviewService {
 	public boolean deleteReview(int reviewNo);
 
 	public Review getReview(int reviewNo);
+
+	public Review getReviewBytranNo(int tranNo);
 }

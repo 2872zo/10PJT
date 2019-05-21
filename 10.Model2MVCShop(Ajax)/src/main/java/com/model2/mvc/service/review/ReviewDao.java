@@ -17,4 +17,6 @@ public interface ReviewDao {
 	public Review getReview(int reviewNo);
 
 	public int makeTotalCount(Search search);
+
+	public Review getReviewBytranNo(int tranNo);
 }

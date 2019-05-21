@@ -8,7 +8,9 @@
 <title>구매 목록조회</title>
 
 <link rel="stylesheet" href="/css/admin.css" type="text/css">
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script src="../javascript/CommonScript.js"></script>
 <script type="text/javascript">
 	$(function(){
@@ -16,6 +18,10 @@
 		
 		var tranNoList = [${tranNoList}];
 		var prodNoList = [${prodNoList}];
+		
+		$( "#dialog" ).dialog({
+		      autoOpen: false
+		});
 		
 		$("tr.ct_list_pop td:nth-child(5)").wrapInner("<ins></ins>");
 		$("tr.ct_list_pop td:nth-child(5)").on("click",function(){
@@ -30,8 +36,53 @@
 		$("a:contains('배송출발')").on("click",function(){
 			fncUpdatePurchaseCode($(this).parent(),tranNoList[$($("td",$(this).parent().parent())[0]).text()-1], 2);
 		});
+		
 		$("a:contains('수취확인')").on("click",function(){
 			fncUpdatePurchaseCode($(this).parent(),tranNoList[$($("td",$(this).parent().parent())[0]).text()-1], 3)
+		});
+		
+		$("a:contains('리뷰작성')").on("click",function(){
+			alert("리뷰작성");
+			$("form").attr("method","POST").attr("action","../review/addReviewView.jsp").submit();
+		});
+		
+		$("a:contains('리뷰확인')").on("click",function(){
+			var tranNo = tranNoList[$($("td",$(this).parent().parent())[0]).text()-1];
+// 			alert(tranNo);
+			var jsonObj = {tranNo:tranNo};
+			var jsonString = JSON.stringify(jsonObj);
+// 			alert(jsonString);
+
+			var target = $(this);
+			
+			$.ajax({
+				url:"/review/json/getReviewBytranNo",
+				method:"POST",
+				headers : {
+					"Accept" : "application/json",
+					"Content-Type" : "application/json"
+				},
+				data: jsonString,
+				dataType: "json",
+				error:function(){
+					alert("error");
+				},
+				success:function(data){
+		        	for(i in data) {
+			   			console.log("no is " + [i] + ", value is " + data[i]);
+					}
+	
+		        	var appendString = data.text;
+// 		        	for(i in data) {
+// 			   			appendString += [i] + " : " + data[i] + "<br/>";
+// 					}
+		        	
+					$("#dialog").empty().append(appendString);
+					$(".ui-dialog-title").empty().append(data.title);
+					$( "#dialog" ).dialog( "option", "position", { my: "left top", at: "left bottom", of: target } );
+					$( "#dialog" ).dialog( "open" );
+				}
+			});
 		});
 		
 		$(".sort").on("click",function(){
@@ -162,5 +213,6 @@
 
 </div>
 
+<div id="dialog"></div>
 </body>
 </html>

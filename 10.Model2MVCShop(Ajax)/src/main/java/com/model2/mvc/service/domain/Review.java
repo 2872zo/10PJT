@@ -8,11 +8,14 @@ public class Review {
 
 	///Field
 	private int reviewNo;
+	private int tranNo;
 	private int prodNo;
 	private String userId;
 	private String title;
 	private String text;
+	private String fileName;
 	private int rating;
+	private Date regDate;
 	
 	///Constructor
 	public Review() {
@@ -66,10 +69,34 @@ public class Review {
 		this.rating = rating;
 	}
 
+	public String getFileName() {
+		return fileName;
+	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+
+	public Date getRegDate() {
+		return regDate;
+	}
+
+	public void setRegDate(Date regDate) {
+		this.regDate = regDate;
+	}
+	
+	public int getTranNo() {
+		return tranNo;
+	}
+
+	public void setTranNo(int tranNo) {
+		this.tranNo = tranNo;
+	}
+
 	@Override
 	public String toString() {
-		return "Review [prodNo=" + prodNo + ", userId=" + userId + ", title=" + title + ", text=" + text + ", rating="
-				+ rating + "]";
+		return "Review [reviewNo=" + reviewNo + ", prodNo=" + prodNo + ", userId=" + userId + ", title=" + title
+				+ ", text=" + text + ", fileName=" + fileName + ", rating=" + rating + ", regDate=" + regDate + "]";
 	}
 	
 }

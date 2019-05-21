@@ -2,6 +2,7 @@ package com.model2.mvc.web.purchase;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
@@ -28,6 +29,7 @@ import com.model2.mvc.service.domain.Purchase;
 import com.model2.mvc.service.domain.User;
 import com.model2.mvc.service.product.ProductService;
 import com.model2.mvc.service.purchase.PurchaseService;
+import com.model2.mvc.service.util.UtilService;
 
 @Controller
 @RequestMapping("/purchase/*")
@@ -39,6 +41,10 @@ public class PurchaseController {
 	@Autowired
 	@Qualifier("productService")
 	ProductService productService;
+	
+	@Autowired
+	@Qualifier("utilService")
+	UtilService utilService;
 
 	@Value("#{commonProperties['pageUnit']}")
 	// @Value("#{commonProperties['pageUnit'] ?: 3}")
@@ -479,6 +485,21 @@ public class PurchaseController {
 			if(user.getRole().equals("user") && purchaseList.get(i).getTranCode().equals("2")) {
 				UnitDetail.add("<a>수취확인</a>");
 			}
+			if(purchaseList.get(i).getTranCode().equals("3")) {
+				Map<String,String> map = new HashMap<String,String>();
+				map.put("valueColum", "title");
+				map.put("colum", "tran_no");
+				map.put("tableName", "review");
+				map.put("value", String.valueOf(purchaseList.get(i).getTranNo()));
+				if(utilService.validationCheck(map)) {
+					UnitDetail.add("<a>리뷰작성</a>");
+				}else {
+					UnitDetail.add("<a>리뷰확인</a>");
+				}
+				
+				
+			}
+			//해당 tranNo에 리뷰가 작성되어있는지 확인하고 없다면 리뷰작성,있다면 리뷰보기
 			unitList.add(UnitDetail);
 		}
 		
