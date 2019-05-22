@@ -72,7 +72,7 @@
 
 <body bgcolor="#ffffff" text="#000000">
 
-<form name="detailForm">
+<form name="detailForm" enctype="multipart/form-data">
 <input type="hidden" name="tranNo" value="">
 <input type="hidden" name="prodNo" value="">
 <input type="hidden" name="userId" value="">
@@ -151,7 +151,7 @@
 		</td>
 		<td bgcolor="D6D6D6" width="1"></td>
 		<td class="ct_write01">
-			<input 	type="text" name="file" class="ct_input_g" style="height:19px"/>
+			<input multiple="multiple"	type="file" name="file" class="ct_input_g" style="height:19px"/>
 		</td>
 	</tr>
 

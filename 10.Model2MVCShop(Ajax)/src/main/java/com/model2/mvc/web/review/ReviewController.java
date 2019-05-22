@@ -1,5 +1,6 @@
 package com.model2.mvc.web.review;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,10 +17,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.model2.mvc.common.Page;
@@ -39,12 +42,39 @@ public class ReviewController {
 	@Qualifier("reviewService")
 	ReviewService reviewService;
 
+	@Value("#{commonProperties['savePath']}")
+	String savePath;
+	
 	public ReviewController() {
 		System.out.println(this.getClass());
 	}
 
 	@RequestMapping("addReview")
-	public ModelAndView addPurchase(@ModelAttribute Review review) throws Exception {
+	public ModelAndView addReview(@ModelAttribute Review review, @RequestParam("file") MultipartFile[] files) throws Exception {
+		
+		if(files!=null && files.length > 0) {
+			String fileName = null;
+			for (MultipartFile file : files) {
+				System.out.println("file");
+				if(!file.isEmpty()) {
+					System.out.println("notEmpty");
+					String originFileExtension = file.getOriginalFilename().substring(file.getOriginalFilename().indexOf("."));
+//					fileName = (fileName != null ? fileName+"," : "") + file.getOriginalFilename();
+//					File target = new File(savePath, file.getOriginalFilename());
+					String saveFileName = System.currentTimeMillis() + originFileExtension;
+					fileName = (fileName != null ? fileName+"," : "") + saveFileName;
+					File target = new File(savePath, saveFileName);
+					
+					FileCopyUtils.copy(file.getBytes(), target);
+				}
+			}
+			if(fileName != null && !fileName.equals("")) {
+				review.setFileName(fileName);
+			}else{
+				review.setFileName(null);
+			}
+		}
+		
 		reviewService.addReview(review);
 		
 		return new ModelAndView("forward:/product/getProduct?prodNo="+review.getProdNo());
